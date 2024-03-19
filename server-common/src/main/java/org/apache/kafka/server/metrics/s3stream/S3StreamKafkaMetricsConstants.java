@@ -14,13 +14,13 @@ package org.apache.kafka.server.metrics.s3stream;
 import io.opentelemetry.api.common.AttributeKey;
 
 public class S3StreamKafkaMetricsConstants {
-    public static final String AUTO_BALANCER_METRICS_TIME_DELAY_METRIC_NAME = "auto_balancer_metrics_time_delay";
-    public static final String S3_OBJECT_COUNT_BY_STATE = "s3_object_count";
-    public static final String S3_OBJECT_SIZE = "s3_object_size";
-    public static final String STREAM_SET_OBJECT_NUM = "stream_set_object_num";
-    public static final String STREAM_OBJECT_NUM = "stream_object_num";
-    public static final String FETCH_LIMITER_PERMIT_NUM = "fetch_limiter_permit_num";
-    public static final String FETCH_PENDING_TASK_NUM = "fetch_pending_task_num";
+    public static final String AUTO_BALANCER_METRICS_TIME_DELAY_METRIC_NAME = "autobalancer.metrics.time.delay";
+    public static final String S3_OBJECT_COUNT_BY_STATE = "s3.object.count";
+    public static final String S3_OBJECT_SIZE = "s3.object.size";
+    public static final String STREAM_SET_OBJECT_NUM = "stream.set.object.num";
+    public static final String STREAM_OBJECT_NUM = "stream.object.num";
+    public static final String FETCH_LIMITER_PERMIT_NUM = "fetch.limiter.permit.num";
+    public static final String FETCH_PENDING_TASK_NUM = "fetch.pending.task.num";
 
     public static final AttributeKey<String> LABEL_NODE_ID = AttributeKey.stringKey("node_id");
 
