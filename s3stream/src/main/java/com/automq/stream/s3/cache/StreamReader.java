@@ -254,6 +254,7 @@ public class StreamReader {
                     : recordsToReturn.get(recordsToReturn.size() - 1).getLastOffset();
                 blockCache.setReadAheadRecord(streamId, lastReadOffset, context.lastOffset);
                 agent.updateReadAheadResult(context.lastOffset, context.totalReadSize);
+                StorageOperationStats.getInstance().readAheadSizeStats(true).record(context.totalReadSize);
                 return recordsToReturn;
             }).whenComplete((ret, ex) -> {
                 if (ex != null) {
@@ -392,6 +393,7 @@ public class StreamReader {
             }
             context.releaseReader();
             agent.updateReadAheadResult(context.lastOffset, context.totalReadSize);
+            StorageOperationStats.getInstance().readAheadSizeStats(false).record(context.totalReadSize);
         });
     }
 

@@ -430,9 +430,9 @@ public class S3StreamMetricsManager {
         }
     }
 
-    public static YammerHistogramMetric buildReadAheadSizeMetric(MetricName metricName, MetricsLevel metricsLevel) {
+    public static YammerHistogramMetric buildReadAheadSizeMetric(MetricName metricName, MetricsLevel metricsLevel, String status) {
         synchronized (BASE_ATTRIBUTES_LISTENERS) {
-            YammerHistogramMetric metric = new YammerHistogramMetric(metricName, metricsLevel, metricsConfig);
+            YammerHistogramMetric metric = new YammerHistogramMetric(metricName, metricsLevel, metricsConfig, AttributesUtils.buildAttributes(status));
             BASE_ATTRIBUTES_LISTENERS.add(metric);
             READ_AHEAD_SIZE_METRICS.add(metric);
             return metric;
