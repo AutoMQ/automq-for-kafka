@@ -83,7 +83,10 @@ public final class S3StreamsMetadataImage {
      */
     @SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
     public InRangeObjects getObjects(long streamId, long startOffset, long endOffset, int limit) {
-        if (streamId < 0 || limit < 0 || (endOffset != ObjectUtils.NOOP_OFFSET && startOffset > endOffset)) {
+        if (endOffset == ObjectUtils.NOOP_OFFSET) {
+            endOffset = Long.MAX_VALUE;
+        }
+        if (streamId < 0 || startOffset > endOffset || limit < 0) {
             return InRangeObjects.INVALID;
         }
         S3StreamMetadataImage stream = streamsMetadata.get(streamId);
@@ -120,7 +123,7 @@ public final class S3StreamsMetadataImage {
                 }
                 objects.add(streamObject.toMetadata());
                 nextStartOffset = streamObject.endOffset();
-                if (objects.size() >= limit || (endOffset != ObjectUtils.NOOP_OFFSET && nextStartOffset >= endOffset)) {
+                if (objects.size() >= limit || nextStartOffset >= endOffset) {
                     return new InRangeObjects(streamId, objects);
                 }
             }
@@ -151,7 +154,7 @@ public final class S3StreamsMetadataImage {
                     objects.add(new S3ObjectMetadata(streamSetObject.objectId(), S3ObjectType.STREAM_SET, List.of(streamOffsetRange),
                         streamSetObject.dataTimeInMs()));
                     nextStartOffset = streamOffsetRange.endOffset();
-                    if (objects.size() >= limit || (endOffset != ObjectUtils.NOOP_OFFSET && nextStartOffset >= endOffset)) {
+                    if (objects.size() >= limit || nextStartOffset >= endOffset) {
                         return new InRangeObjects(streamId, objects);
                     }
                 } else {
