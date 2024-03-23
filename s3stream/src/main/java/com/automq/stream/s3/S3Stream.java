@@ -219,7 +219,7 @@ public class S3Stream implements Stream {
                             startOffset, endOffset, totalSize, timerUtil.elapsedAs(TimeUnit.MILLISECONDS));
                 }
                 pendingFetches.remove(retCf);
-                LOGGER.info("stream={}, {}-{}, remove cf: {}", streamId, startOffset, endOffset, retCf);
+                LOGGER.info("stream={}, {}-{}, remove cf: {}, size: {}", streamId, startOffset, endOffset, retCf, pendingFetches.size());
             });
             pendingFetches.add(retCf);
             LOGGER.info("stream={}, {}-{}, add cf: {}", streamId, startOffset, endOffset, retCf);
