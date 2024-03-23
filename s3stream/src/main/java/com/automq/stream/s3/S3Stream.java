@@ -219,8 +219,10 @@ public class S3Stream implements Stream {
                             startOffset, endOffset, totalSize, timerUtil.elapsedAs(TimeUnit.MILLISECONDS));
                 }
                 pendingFetches.remove(retCf);
+                LOGGER.info("stream={}, {}-{}, remove cf: {}", streamId, startOffset, endOffset, retCf);
             });
             pendingFetches.add(retCf);
+            LOGGER.info("stream={}, {}-{}, add cf: {}", streamId, startOffset, endOffset, retCf);
             return retCf;
         } finally {
             readLock.unlock();
