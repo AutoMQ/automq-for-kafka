@@ -202,6 +202,8 @@ public class S3Stream implements Stream {
                 }
                 return CompletableFuture.completedFuture(rs);
             });
+            pendingFetches.add(retCf);
+            LOGGER.info("stream={}, {}-{}, add cf: {}", streamId, startOffset, endOffset, retCf);
             retCf.whenComplete((rs, ex) -> {
                 if (ex != null) {
                     Throwable cause = FutureUtil.cause(ex);
@@ -221,8 +223,6 @@ public class S3Stream implements Stream {
                 pendingFetches.remove(retCf);
                 LOGGER.info("stream={}, {}-{}, remove cf: {}, size: {}", streamId, startOffset, endOffset, retCf, pendingFetches.size());
             });
-            pendingFetches.add(retCf);
-            LOGGER.info("stream={}, {}-{}, add cf: {}", streamId, startOffset, endOffset, retCf);
             return retCf;
         } finally {
             readLock.unlock();
