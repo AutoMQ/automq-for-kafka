@@ -155,4 +155,8 @@
     <allow pkg="kafka.tools" />
     <allow pkg="com.automq.s3shell.sdk" />
   </subpackage>
+
+  <subpackage name="log4j">
+    <allow pkg="org.apache.log4j" />
+  </subpackage>
 </import-control>
