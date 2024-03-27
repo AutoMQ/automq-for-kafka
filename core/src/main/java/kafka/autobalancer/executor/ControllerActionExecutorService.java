@@ -18,10 +18,12 @@ import kafka.autobalancer.common.AutoBalancerConstants;
 import kafka.autobalancer.config.AutoBalancerControllerConfig;
 import kafka.autobalancer.listeners.BrokerStatusListener;
 import org.apache.kafka.common.TopicPartition;
+import org.apache.kafka.common.config.ConfigException;
 import org.apache.kafka.common.message.AlterPartitionReassignmentsRequestData;
 import org.apache.kafka.common.metadata.BrokerRegistrationChangeRecord;
 import org.apache.kafka.common.metadata.RegisterBrokerRecord;
 import org.apache.kafka.common.metadata.UnregisterBrokerRecord;
+import org.apache.kafka.common.utils.ConfigUtils;
 import org.apache.kafka.common.utils.KafkaThread;
 import org.apache.kafka.common.utils.Time;
 import org.apache.kafka.controller.Controller;
@@ -32,6 +34,7 @@ import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.OptionalLong;
 import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -90,6 +93,20 @@ public class ControllerActionExecutorService implements ActionExecutorService, R
     public void execute(List<Action> actions) {
         for (Action action : actions) {
             execute(action);
+        }
+    }
+
+    @Override
+    public void validateReconfiguration(Map<String, Object> configs) throws ConfigException {
+        try {
+            if (configs.containsKey(AutoBalancerControllerConfig.AUTO_BALANCER_CONTROLLER_EXECUTION_INTERVAL_MS)) {
+                long interval = ConfigUtils.getLong(configs, AutoBalancerControllerConfig.AUTO_BALANCER_CONTROLLER_EXECUTION_INTERVAL_MS);
+                if (interval < 0 ) {
+                    throw new ConfigException(AutoBalancerControllerConfig.AUTO_BALANCER_CONTROLLER_EXECUTION_INTERVAL_MS, interval);
+                }
+            }
+        } catch (Exception e) {
+            throw new ConfigException("Reconfiguration validation error", e);
         }
     }
 

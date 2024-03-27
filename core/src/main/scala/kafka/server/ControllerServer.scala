@@ -19,7 +19,8 @@ package kafka.server
 
 import com.automq.stream.s3.metadata.ObjectUtils
 import kafka.autobalancer.config.AutoBalancerControllerConfig
-import kafka.autobalancer.{AutoBalancerManager, AutoBalancerService}
+import kafka.autobalancer.AutoBalancerManager
+import kafka.autobalancer.services.AutoBalancerService
 import kafka.log.stream.s3.ConfigUtils
 import kafka.metrics.LinuxIoMetricsCollector
 import kafka.migration.MigrationPropagator
@@ -133,7 +134,7 @@ class ControllerServer(
   @volatile var registrationManager: ControllerRegistrationManager = _
   @volatile var registrationChannelManager: NodeToControllerChannelManager = _
 
-  var autoBalancerManager: Option[AutoBalancerService] = None
+  var autoBalancerManager: AutoBalancerService = _
 
   protected def buildAutoBalancerManager: AutoBalancerService = {
     new AutoBalancerManager(time, config, controller, raftManager.client)
@@ -361,12 +362,8 @@ class ControllerServer(
         DataPlaneAcceptor.ThreadPrefix,
         "controller")
 
-      autoBalancerManager = if (config.getBoolean(AutoBalancerControllerConfig.AUTO_BALANCER_CONTROLLER_ENABLE)) {
-        Some(buildAutoBalancerManager)
-      } else {
-        None
-      }
-      autoBalancerManager.foreach(_.start())
+      autoBalancerManager = buildAutoBalancerManager
+      autoBalancerManager.start()
 
       // Set up the metadata cache publisher.
       metadataPublishers.add(metadataCachePublisher)

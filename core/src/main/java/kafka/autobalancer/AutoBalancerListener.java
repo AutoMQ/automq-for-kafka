@@ -45,10 +45,10 @@ public class AutoBalancerListener implements RaftClient.Listener<ApiMessageAndVe
     private final LoadRetriever loadRetriever;
     private final AnomalyDetector anomalyDetector;
 
-    public AutoBalancerListener(int nodeId, LogContext logContext, KafkaEventQueue queue, ClusterStatusListenerRegistry registry,
+    public AutoBalancerListener(int nodeId, KafkaEventQueue queue, ClusterStatusListenerRegistry registry,
                                 LoadRetriever loadRetriever, AnomalyDetector anomalyDetector) {
         this.nodeId = nodeId;
-        this.logger = logContext.logger(AutoBalancerConstants.AUTO_BALANCER_LOGGER_CLAZZ);
+        this.logger = new LogContext(String.format("[AutoBalancerListener id=%d] ", nodeId)).logger(AutoBalancerConstants.AUTO_BALANCER_LOGGER_CLAZZ);
         this.queue = queue;
         this.registry = registry;
         this.loadRetriever = loadRetriever;

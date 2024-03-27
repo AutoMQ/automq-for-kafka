@@ -99,7 +99,6 @@ public class AutoBalancerManagerTest extends AutoBalancerClientsIntegrationTestH
         props.put(AutoBalancerControllerConfig.AUTO_BALANCER_CONTROLLER_NETWORK_OUT_DISTRIBUTION_DETECT_AVG_DEVIATION, "0.2");
         props.put(AutoBalancerControllerConfig.AUTO_BALANCER_CONTROLLER_ANOMALY_DETECT_INTERVAL_MS, "10000");
         props.put(AutoBalancerControllerConfig.AUTO_BALANCER_CONTROLLER_ACCEPTED_METRICS_DELAY_MS, "10000");
-        props.put(AutoBalancerControllerConfig.AUTO_BALANCER_CONTROLLER_LOAD_AGGREGATION, "true");
         props.put(AutoBalancerControllerConfig.AUTO_BALANCER_CONTROLLER_EXCLUDE_TOPICS, "__consumer_offsets," + Topic.AUTO_BALANCER_METRICS_TOPIC_NAME);
 
         return props;
